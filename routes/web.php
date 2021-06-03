@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,8 +48,10 @@ $posts = [
     ];
 
 Route::get('posts/', function() use($posts) {
+    //dd(request()->all());
+    dd((int)request()->query('page', 1 /*default val*/));
     return view('Posts.index', ['posts' => $posts]);
-});
+})->name('Posts.home');
 
 //Required Parameter along with on the fly parameter checking with regex 
 Route::get('/posts/{id}', function($id) use($posts) {
@@ -59,41 +62,46 @@ Route::get('/posts/{id}', function($id) use($posts) {
 //Optional Parameter
 Route::get('/recent-posts/{days_ago?}', function($daysAgo = 5){
     return 'Posts from '.$daysAgo.' days ago.';
-})->name('Posts.recent.index');
+})->name('Posts.recent.index')->middleware('auth');
 
-//Return json data the long way
-Route::get('fun/responses', function() use($posts) {
-    //Response object to return json data, the long way
-    return response($posts, 201)
-    ->header('Content-Type', 'application/json')
-    ->cookie('MY_COOKIE', 'Pior Jura', 900);
+//Route Grouping Example
+Route::prefix('/fun')->name('fun.')->group(function() use($posts) {
+    //Return json data the long way
+    Route::get('responses', function() use($posts) {
+        //Response object to return json data, the long way
+        return response($posts, 201)
+        ->header('Content-Type', 'application/json')
+        ->cookie('MY_COOKIE', 'Pior Jura', 900);
+    })->name('responses');
+
+    /* Route helper methods */
+    Route::get('redirect', function() {
+        return redirect('/contact');
+    })->name('redirect');
+
+    Route::get('back', function() {
+        return back();
+    })->name('back');
+
+    Route::get('named-route', function() {
+        return redirect()->route('Posts.show', ['id' => 1]);
+    })->name('named-route');
+
+    Route::get('away', function() {
+        return redirect()->away('https://www.google.com');
+    })->name('away');
+
+    //Simple way to return json data 
+    Route::get('json', function() use($posts) {
+        return response()->json($posts);
+    })->name('json');
+
+    //force download
+    Route::get('download', function() use($posts) {
+        return response()->download(public_path('logo.jpg'), 'LOGO.jpg');
+    })->name('download');
+    /* end of route helper methods */
 });
 
-/* Route helper methods */
-Route::get('fun/redirect', function() {
-    return redirect('/contact');
-});
 
-Route::get('fun/back', function() {
-    return back();
-});
 
-Route::get('fun/named-route', function() {
-    return redirect()->route('Posts.show', ['id' => 1]);
-});
-
-Route::get('fun/away', function() {
-    return redirect()->away('https://www.google.com');
-});
-
-//Simple way to return json data 
-Route::get('fun/json', function() use($posts) {
-    return response()->json($posts);
-});
-
-//force download
-Route::get('fun/download', function() use($posts) {
-    return response()->download('');
-});
-
-/* end of route helper methods */
