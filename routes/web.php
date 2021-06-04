@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\PostsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,9 +27,13 @@ Route::get('/contact', function(){
 })
 */
 
-Route::view('/', 'Home.index')->name('Home.index');
+Route::get('/', [HomeController::class, 'home'])
+->name('Home.index');
 
-Route::view('/contact', 'Home.contact')->name('Home.contact');
+Route::get('/contact', [HomeController::class, 'contact'])
+->name('Home.contact');
+
+Route::get('/single', AboutController::class);
 
 $posts = [
         1 => [
@@ -47,9 +54,14 @@ $posts = [
         ]
     ];
 
+
+Route::resource('posts', PostsController::class)->only(['index', 'show']);
+//Route::resource('posts', PostsController::class)->except(['index', 'show']);
+
+/*
 Route::get('posts/', function() use($posts) {
     //dd(request()->all());
-    dd((int)request()->query('page', 1 /*default val*/));
+    dd((int)request()->query('page', 1);
     return view('Posts.index', ['posts' => $posts]);
 })->name('Posts.home');
 
@@ -62,7 +74,7 @@ Route::get('/posts/{id}', function($id) use($posts) {
 //Optional Parameter
 Route::get('/recent-posts/{days_ago?}', function($daysAgo = 5){
     return 'Posts from '.$daysAgo.' days ago.';
-})->name('Posts.recent.index')->middleware('auth');
+})->name('Posts.recent.index')->middleware('auth'); */
 
 //Route Grouping Example
 Route::prefix('/fun')->name('fun.')->group(function() use($posts) {
