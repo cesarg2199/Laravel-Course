@@ -2,29 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostStore;
+use App\Models\BlogPost;
 use Illuminate\Http\Request;
 
 class PostsController extends Controller
 {
-
-    private $posts = [
-        1 => [
-            'title' => 'Intro to Laravel',
-            'content' => 'This is a short intro to Laravel',
-            'is_new' => FALSE,
-            'has_comments' => TRUE
-        ],
-        2 => [
-            'title' => 'Intro to PHP',
-            'content' => 'This is a short intro to PHP',
-            'is_new' => True            
-        ],
-        3 => [
-            'title' => 'Cesar Guerrero',
-            'content' => 'This is a short intro to Laravel learning.',
-            'is_new' => True            
-        ]
-    ];
 
     /**
      * Display a listing of the resource.
@@ -33,7 +16,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        return view('Posts.index', ['posts' => $this->posts]);
+        return view('Posts.index', ['posts' => BlogPost::all()]);
     }
 
     /**
@@ -43,7 +26,7 @@ class PostsController extends Controller
      */
     public function create()
     {
-        //
+        return view('Posts.create');
     }
 
     /**
@@ -52,9 +35,21 @@ class PostsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostStore $request)
     {
-        //
+        
+        $validated = $request->validated();
+        $post = BlogPost::create($validated);
+
+        //Create new blogpost instance and save it to the database. 
+        /* $post = new BlogPost();
+        $post->title = $validated['title'];
+        $post->content = $validated['content'];
+        $post->save(); */
+
+        $request->session()->flash('status', 'this blog post was created!');
+
+        return redirect()->route('posts.show', ['post' => $post->id]);
     }
 
     /**
@@ -65,7 +60,7 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        return view('Posts.show', ['post' => $this->posts[$id]]);
+        return view('Posts.show', ['post' => BlogPost::findOrFail($id)]);
     }
 
     /**
@@ -76,7 +71,8 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('Posts.edit', ['post' => BlogPost::findOrFail($id)]);
+        
     }
 
     /**
@@ -86,7 +82,7 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PostStore $request, $id)
     {
         //
     }
