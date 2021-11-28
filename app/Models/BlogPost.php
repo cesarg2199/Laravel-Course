@@ -7,7 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class BlogPost extends Model
 {
+    use HasFactory;
+
     #how to do mass assingmnet with the create instance method 
     protected $fillable = ['title', 'content'];
-    use HasFactory;
+    
+    public function comments()
+    {
+        return $this->hasMany('App\Models\Comment');
+    }
+
 }
