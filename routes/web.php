@@ -16,6 +16,28 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/', [HomeController::class, 'home'])
+->name('Home.index');
+
+Route::get('/contact', [HomeController::class, 'contact'])
+->name('Home.contact');
+
+Route::get('/single', AboutController::class)
+->name('About.index');
+
+Route::resource('posts', PostsController::class);
+//->only(['index', 'show', 'create', 'store', 'edit', 'update']);
+//Route::resource('posts', PostsController::class)->except(['index', 'show']);
+
+Auth::routes();
+
+
+
+
+
+
+
 /*
 Route::get('/', function () {
     return view('Home.index');
@@ -26,15 +48,7 @@ Route::get('/contact', function(){
     return view('Home.contact');
 })
 */
-
-Route::get('/', [HomeController::class, 'home'])
-->name('Home.index');
-
-Route::get('/contact', [HomeController::class, 'contact'])
-->name('Home.contact');
-
-Route::get('/single', AboutController::class);
-
+/*
 $posts = [
         1 => [
             'title' => 'Intro to Laravel',
@@ -54,12 +68,6 @@ $posts = [
         ]
     ];
 
-
-Route::resource('posts', PostsController::class);
-//->only(['index', 'show', 'create', 'store', 'edit', 'update']);
-//Route::resource('posts', PostsController::class)->except(['index', 'show']);
-
-/*
 Route::get('posts/', function() use($posts) {
     //dd(request()->all());
     dd((int)request()->query('page', 1);
@@ -75,7 +83,7 @@ Route::get('/posts/{id}', function($id) use($posts) {
 //Optional Parameter
 Route::get('/recent-posts/{days_ago?}', function($daysAgo = 5){
     return 'Posts from '.$daysAgo.' days ago.';
-})->name('Posts.recent.index')->middleware('auth'); */
+})->name('Posts.recent.index')->middleware('auth'); 
 
 //Route Grouping Example
 Route::prefix('/fun')->name('fun.')->group(function() use($posts) {
@@ -87,7 +95,7 @@ Route::prefix('/fun')->name('fun.')->group(function() use($posts) {
         ->cookie('MY_COOKIE', 'Pior Jura', 900);
     })->name('responses');
 
-    /* Route helper methods */
+    // Route helper methods
     Route::get('redirect', function() {
         return redirect('/contact');
     })->name('redirect');
@@ -113,8 +121,5 @@ Route::prefix('/fun')->name('fun.')->group(function() use($posts) {
     Route::get('download', function() use($posts) {
         return response()->download(public_path('logo.jpg'), 'LOGO.jpg');
     })->name('download');
-    /* end of route helper methods */
-});
-
-
-
+    // end of route helper methods 
+}); */

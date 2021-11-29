@@ -37,4 +37,10 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    //Can use this function to override the default username used for logging in. Located originally in AuthenticatesUsers.php
+    /*public function username() 
+    {
+        return 'email';
+    }*/
 }
