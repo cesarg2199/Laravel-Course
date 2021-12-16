@@ -20,9 +20,10 @@
             @else
                 <a class="p-2 text-dark" href="{{ route('Home.index') }}">Home</a>
                 <a class="p-2 text-dark" href="{{ route('Home.contact') }}">Contact</a>
+                <a class="p-2 text-dark" href="{{ route('About.index') }}">About</a>
                 <a class="p-2 text-dark" href="{{ route('posts.index') }}">Blog Posts</a>
                 <a class="p-2 text-dark" href="{{ route('posts.create') }}">Add</a>
-                <a class="p-2 text-dark" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                <a class="p-2 text-dark" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout ({{ Auth::user()->name }})</a>
                 <form id="logout-form" action={{ route('logout') }} method="POST" style="display:none">@csrf</form>
             @endguest
 
@@ -35,6 +36,6 @@
             </div> 
         @endif
         @yield('content')
-    </>
+     </div>
 </body>
 </html>

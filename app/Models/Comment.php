@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Comment extends Model
 {
-    use HasFactory;
+    use SoftDeletes;
 
     // blog_post_id converts method name to reference id, unless you use second parameter 
     public function blogPost()

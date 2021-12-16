@@ -5,10 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PostStore;
 use App\Models\BlogPost;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+
+
 //use Illuminate\Support\Facades\DB;
 
 class PostsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        //->only(['create', 'store', 'edit', 'update', 'destroy']); protect certain routes inside controller
+    }
 
     /**
      * Display a listing of the resource.
@@ -54,12 +63,14 @@ class PostsController extends Controller
     {
         
         $validated = $request->validated();
+        $validated['user_id'] = Auth::user()->id;
         $post = BlogPost::create($validated);
 
         //Create new blogpost instance and save it to the database. 
-        /* $post = new BlogPost();
+        /*$post = new BlogPost();
         $post->title = $validated['title'];
         $post->content = $validated['content'];
+        $post->user_id = Auth::user()->id;
         $post->save(); */
 
         $request->session()->flash('status', 'This blog post was created!');
@@ -75,7 +86,7 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        return view('Posts.show', ['post' => BlogPost::with('comments')->findOrFail($id)]);
+        return view('Posts.show', ['post' => BlogPost::with('comments', 'user')->findOrFail($id)]);
     }
 
     /**
@@ -86,7 +97,13 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        return view('Posts.edit', ['post' => BlogPost::findOrFail($id)]);
+        $post = BlogPost::findOrFail($id);
+
+        if (Gate::denies('update-post', $post)) {
+            abort(403, "You can't edit bitch");
+        }
+
+        return view('Posts.edit', ['post' => $post]);
         
     }
 
@@ -100,6 +117,7 @@ class PostsController extends Controller
     public function update(PostStore $request, $id)
     {
         $post = BlogPost::findOrFail($id);
+
         $validated = $request->validated();
         $post->fill($validated);
         $post->save();
