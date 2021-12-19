@@ -20,4 +20,9 @@ class HomeController extends Controller
     {
         return view('Home.contact');
     }
+
+    public function secret()
+    {
+        return view('Home.secret');
+    }
 }

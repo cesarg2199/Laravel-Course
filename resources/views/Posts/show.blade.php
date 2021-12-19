@@ -3,17 +3,35 @@
 @section('title', $post->title)
 
 @section('content')
-<h1>{{ $post->title }}</h1>
-<p>{{ $post->content }}</p>
-<p>Added: {{ $post->created_at->diffForHumans() }}</p>
-@if (now()->diffInMinutes($post->created_at) < 5)
-    <div class="alert alert-info">New!</div>
-@endif
-<h4>Comments</h4>
-@forelse ($post->comments as $comment)
-    <p>{{ $comment->content; }}</p>
-    <p class="text-muted">Added {{ $comment->created_at->diffForHumans() }}</p>
-@empty
-    <p>No comments yet!</p>
-@endforelse
+<div class="row">
+    <div class="col-8">
+        <h1>
+            @badge(['show' => now()->diffInMinutes($post->created_at) < 50]) <!-- anything you pass inside the component get picked up by $slot, to pass addtional variables pass them in an array -->
+                New! 
+            @endbadge
+            {{ $post->title }}
+        </h1>
+        <p>{{ $post->content }}</p>
+        @updated(['date' => $post->created_at, 'name' => $post->user->name])
+        @endupdated
+
+        @updated(['date' => $post->updated_at])
+            Updated
+        @endupdated
+
+        @tags(['tags' => $post->tags])@endtags
+
+        <h4>Comments</h4>
+        @forelse ($post->comments as $comment)
+            <p>{{ $comment->content; }}</p>
+            @updated(['date' => $comment->created_at, 'name' => $comment->user->name])
+            @endupdated
+        @empty
+            <p>No comments yet!</p>
+        @endforelse
+    </div>
+    <div class="col-4">
+        @include('Posts.partials.activity')
+    </div>
+</div>
 @endsection

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostStore;
 use App\Models\BlogPost;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -39,8 +40,9 @@ class PostsController extends Controller
         dd(DB::getQueryLog()); */
 
         // withCount adds new property comments_count
-
-        return view('Posts.index', ['posts' => BlogPost::withCount('comments')->get()]);
+        return view('Posts.index', [
+            'posts' => BlogPost::latest()->withCount('comments')->with('user')->with('tags')->get()
+        ]);
     }
 
     /**
@@ -50,6 +52,7 @@ class PostsController extends Controller
      */
     public function create()
     {
+        //$this->authorize('posts.create');
         return view('Posts.create');
     }
 
@@ -63,7 +66,7 @@ class PostsController extends Controller
     {
         
         $validated = $request->validated();
-        $validated['user_id'] = Auth::user()->id;
+        $validated['user_id'] = $request->user()->id;
         $post = BlogPost::create($validated);
 
         //Create new blogpost instance and save it to the database. 
@@ -86,7 +89,8 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        return view('Posts.show', ['post' => BlogPost::with('comments', 'user')->findOrFail($id)]);
+        //$this->authorize('view', BlogPost::findOrFail($id));
+        return view('Posts.show', ['post' => BlogPost::with('comments')->with('tags')->with('user')->findOrFail($id)]);
     }
 
     /**
@@ -99,9 +103,12 @@ class PostsController extends Controller
     {
         $post = BlogPost::findOrFail($id);
 
-        if (Gate::denies('update-post', $post)) {
+        /*if (Gate::denies('update-post', $post)) {
             abort(403, "You can't edit bitch");
-        }
+        }*/
+
+        $this->authorize('update', $post);
+
 
         return view('Posts.edit', ['post' => $post]);
         
@@ -136,6 +143,13 @@ class PostsController extends Controller
     public function destroy($id)
     {
         $post = BlogPost::findOrFail($id);
+
+        /*if (Gate::denies('delete-post', $post)) {
+            abort(403, "You can't delete this blog post");
+        }*/
+
+        $this->authorize($post);
+
         $post->delete();
 
         session()->flash('status', 'Blog post was deleted');

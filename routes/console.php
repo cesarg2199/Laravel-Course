@@ -22,6 +22,7 @@ Artisan::command('inspire', function () {
 Artisan::command('backupfull', function(){
     //need to figure out a way to add checks to this to make sure it doesnt get abused
     Artisan::call('backupsql');
+    Artisan::call('schema:dump');
     Artisan::call('backupfiles');
 });
 
@@ -30,5 +31,14 @@ Artisan::command('backupsql', function(){
 });
 
 Artisan::command('backupfiles', function() {
+    /*
+        backing up files should include:
+            - Participant Files
+            - User Files
+            - Reciepts
+            - Database Dump
+            - Migration Files --> or they can be brought in from the git, probably shouldnt save migration files on live enviroment
+        will be packaged in a folder with timestamp on aws server
+    */
     echo "BACKING UP THE FILES TO AWS...\n";
 });
