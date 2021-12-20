@@ -157,3 +157,5 @@ INSERT INTO `migrations` VALUES (14,'2021_06_25_202455_create_blog_posts_table',
 INSERT INTO `migrations` VALUES (22,'2021_12_16_192437_add_is_admin_to_users_table',7);
 INSERT INTO `migrations` VALUES (23,'2021_12_17_205111_create_tags_table',7);
 INSERT INTO `migrations` VALUES (25,'2021_12_18_070310_add_user_to_comments_table',8);
+INSERT INTO `migrations` VALUES (26,'2021_12_17_205226_create_blog_post_tag_table',9);
+INSERT INTO `migrations` VALUES (27,'2021_12_10_215624_add_user_to_blog_posts_table',9);
