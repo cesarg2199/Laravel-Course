@@ -2,7 +2,7 @@
 
 @section('title', 'Update Post')
     @section('content')
-        <form action="{{ secure_url(route('posts.update', ['post' => $post->id], false)) }}" method="POST">
+        <form action="{{ secure_url(route('posts.update', ['post' => $post->id], config('app.http'))) }}" method="POST">
             @csrf
             @method('PUT')
             @include('Posts.partials.form')

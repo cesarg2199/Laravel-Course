@@ -3,7 +3,7 @@
             @slot('items')
                     @foreach ($mostCommented as $post)
                             <li class="list-group-item">
-                                    <a href="{{ secure_url(route('posts.show', ['post' => $post->id], false)) }}">{{ $post->title; }}</a>
+                                    <a href="{{ secure_url(route('posts.show', ['post' => $post->id], config('app.http'))) }}">{{ $post->title; }}</a>
                                     <i><p class="text-muted">{{ $post->comments_count; }} Comments</p></i>
                             </li>
                     @endforeach

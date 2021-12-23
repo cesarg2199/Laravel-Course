@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <form method="POST" action="{{ secure_url(route('login', [], false)) }}">
+    <form method="POST" action="{{ secure_url(route('login', [], config('app.http'))) }}">
         @csrf
         <div class="form-group">
             <label>Email</label>
