@@ -14,17 +14,17 @@
         <nav class="my-2 my-md-0 mr-md-3">
             @guest
                 @if (Route::has('register'))
-                    <a class="p-2 text-dark" href="{{ route('register') }}">Register</a>
+                    <a class="p-2 text-dark" href="{{ secure_url(route('register', [], false)) }}">Register</a>
                 @endif
-                <a class="p-2 text-dark" href="{{ route('login') }}">Login</a>
+                <a class="p-2 text-dark" href="{{ secure_url(route('login', [], false)) }}">Login</a>
             @else
-                <a class="p-2 text-dark" href="{{ route('Home.index') }}">Home</a>
-                <a class="p-2 text-dark" href="{{ route('Home.contact') }}">Contact</a>
-                <a class="p-2 text-dark" href="{{ route('About.index') }}">About</a>
-                <a class="p-2 text-dark" href="{{ route('posts.index') }}">Blog Posts</a>
-                <a class="p-2 text-dark" href="{{ route('posts.create') }}">Add</a>
-                <a class="p-2 text-dark" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout ({{ Auth::user()->name }})</a>
-                <form id="logout-form" action={{ route('logout') }} method="POST" style="display:none">@csrf</form>
+                <a class="p-2 text-dark" href="{{ secure_url(route('Home.index', [], false)) }}">Home</a>
+                <a class="p-2 text-dark" href="{{ secure_url(route('Home.contact', [], false)) }}">Contact</a>
+                <a class="p-2 text-dark" href="{{ secure_url(route('About.index', [], false)) }}">About</a>
+                <a class="p-2 text-dark" href="{{ secure_url(route('posts.index', [], false)) }}">Blog Posts</a>
+                <a class="p-2 text-dark" href="{{ secure_url(route('posts.create', [], false)) }}">Add</a>
+                <a class="p-2 text-dark" href="{{ secure_url(route('logout', [], false)) }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout ({{ Auth::user()->name }})</a>
+                <form id="logout-form" action={{ secure_url(route('logout', [], false)) }} method="POST" style="display:none">@csrf</form>
             @endguest
 
         </nav>
@@ -33,7 +33,7 @@
         @if (session('status'))
            <div class="alert alert-success">
                 {{ session('status') }}
-            </div> 
+            </div>
         @endif
         @yield('content')
      </div>

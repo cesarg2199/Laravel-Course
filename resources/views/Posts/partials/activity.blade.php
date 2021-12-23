@@ -3,9 +3,9 @@
             @slot('items')
                     @foreach ($mostCommented as $post)
                             <li class="list-group-item">
-                                    <a href="{{ route('posts.show', ['post' => $post->id]) }}">{{ $post->title; }}</a>
+                                    <a href="{{ secure_url(route('posts.show', ['post' => $post->id], false)) }}">{{ $post->title; }}</a>
                                     <i><p class="text-muted">{{ $post->comments_count; }} Comments</p></i>
-                            </li>   
+                            </li>
                     @endforeach
             @endslot
     @endcard
@@ -16,4 +16,4 @@
     @card(['title' => 'Most Active Users Last Month', 'subtitle' => 'Users with the most posts written last month'])
             @slot('items', collect($mostActiveLastMonth)->pluck('name'))
     @endcard
-</> 
+</>

@@ -2,7 +2,7 @@
     @if ($post->trashed())
         <del>
     @endif
-    <a class="{{ $post->trashed() ? 'text-muted' : ''}}" href="{{ route('posts.show', ['post' => $post->id]) }}">{{ $post->title }}</a>
+    <a class="{{ $post->trashed() ? 'text-muted' : ''}}" href="{{ secure_url(route('posts.show', ['post' => $post->id], false)) }}">{{ $post->title }}</a>
     @if ($post->trashed())
         </del>
     @endif
@@ -21,18 +21,18 @@
     @endif
     <!-- Edit btn -->
     @can('update', $post)
-        <a href="{{ route('posts.edit', ['post' => $post->id]) }}" class="btn btn-warning">Edit</a>
+        <a href="{{ secure_url(route('posts.edit', ['post' => $post->id], false)) }}" class="btn btn-warning">Edit</a>
     @endcan
-    
+
      <!-- Delete btn -->
     @can('delete', $post)
         @if (!$post->trashed())
-            <form class="d-inline" action="{{ route('posts.destroy', ['post' => $post->id]) }}" method="POST">
+            <form class="d-inline" action="{{ secure_url(route('posts.destroy', ['post' => $post->id], false)) }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <input type="submit" value="Delete" class="btn btn-danger"/>
-            </form>  
+            </form>
         @endif
     @endcan
-    
+
 </div>

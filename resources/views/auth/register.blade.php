@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <form method="POST" action="{{ route('register') }}">
+    <form method="POST" action="{{ secure_url(route('register', [], false)) }}">
         @csrf
         <div class="form-group">
             <label>Name</label>
