@@ -7,7 +7,7 @@
     <div class="col-8">
         <h1>
             @badge(['show' => now()->diffInMinutes($post->created_at) < 50]) <!-- anything you pass inside the component get picked up by $slot, to pass addtional variables pass them in an array -->
-                New! 
+                New!
             @endbadge
             {{ $post->title }}
         </h1>
@@ -22,6 +22,7 @@
         @tags(['tags' => $post->tags])@endtags
 
         <h4>Comments</h4>
+        @include('Comments.form')
         @forelse ($post->comments as $comment)
             <p>{{ $comment->content; }}</p>
             @updated(['date' => $comment->created_at, 'name' => $comment->user->name])
