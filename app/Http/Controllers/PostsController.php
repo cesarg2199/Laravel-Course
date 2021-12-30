@@ -41,7 +41,7 @@ class PostsController extends Controller
 
         // withCount adds new property comments_count
         return view('Posts.index', [
-            'posts' => BlogPost::latest()->withCount('comments')->with('user')->with('tags')->get()
+            'posts' => BlogPost::latestWithRelations()->get()
         ]);
     }
 
@@ -90,7 +90,7 @@ class PostsController extends Controller
     public function show($id)
     {
         //$this->authorize('view', BlogPost::findOrFail($id));
-        return view('Posts.show', ['post' => BlogPost::with('comments')->with('tags')->with('user')->findOrFail($id)]);
+        return view('Posts.show', ['post' => BlogPost::with('comments', 'tags', 'user', 'comments.user')->findOrFail($id)]);
     }
 
     /**
