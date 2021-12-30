@@ -8,6 +8,11 @@
     <textarea name="content" class="form-control">{{ old('content', optional($post ?? null)->content) }}</textarea>
 </div>
 
+<div class="form-group">
+    <label for="title">Thumbnail</label>
+    <input type="file" name="thumbnail" class="form-control-file"/>
+</div>
+
 @errors
 <!-- Displaying errors from component -->
 @enderrors

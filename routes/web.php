@@ -3,7 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\Website\AboutController;
-use App\Http\Controllers\PostsController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostTagController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -33,9 +33,9 @@ Route::get('/secret', [HomeController::class, 'secret'])
 Route::get('/about', [AboutController::class, 'index'])
 ->name('About.index');
 
-Route::resource('posts', PostsController::class);
+Route::resource('posts', PostController::class);
 //->only(['index', 'show', 'create', 'store', 'edit', 'update']);
-//Route::resource('posts', PostsController::class)->except(['index', 'show']);
+//Route::resource('posts', PostController::class)->except(['index', 'show']);
 
 Route::get('posts/tag/{tag}', [PostTagController::class, 'index'])->name('posts.tags.index');
 

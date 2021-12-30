@@ -4,15 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostStore;
 use App\Models\BlogPost;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-
+use Illuminate\Support\Facades\Storage;
 
 //use Illuminate\Support\Facades\DB;
 
-class PostsController extends Controller
+class PostController extends Controller
 {
     public function __construct()
     {
@@ -64,10 +63,28 @@ class PostsController extends Controller
      */
     public function store(PostStore $request)
     {
-        
         $validated = $request->validated();
         $validated['user_id'] = $request->user()->id;
         $post = BlogPost::create($validated);
+
+        $hasFile = $request->hasFile('thumbnail');
+
+        if ($hasFile) {
+            $file = $request->file('thumbnail');
+            dump($hasFile);
+            dump($file);
+            dump($file->getMimeType());
+            dump($file->getClientOriginalExtension());
+            //dump($file->store('thumbnails'));
+            //dump(Storage::disk('public')->putFile('thumbnails', $file));
+            //dump($file->storeAs('thumbnails', $post->id . '.' . $file->guessExtension()));
+            $name = Storage::putFileAs('thumbnails', $file, $post->id . '.' . $file->guessExtension());
+
+            dump(Storage::url($name));
+        }
+
+        die;
+    
 
         //Create new blogpost instance and save it to the database. 
         /*$post = new BlogPost();
