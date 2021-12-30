@@ -1,6 +1,6 @@
 <div class="mb-2 mt-2">
     @auth
-        <form  method="POST">
+        <form method="POST">
             @csrf
             <div class="form-group">
                 <textarea name="content" class="form-control"></textarea>
