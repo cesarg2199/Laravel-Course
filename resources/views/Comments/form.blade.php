@@ -1,6 +1,7 @@
+@errors @enderrors
 <div class="mb-2 mt-2">
     @auth
-        <form method="POST">
+        <form method="POST" action="{{ secure_url(route('posts.comments.store', ['post' => $post->id], config('app.http'))) }}">
             @csrf
             <div class="form-group">
                 <textarea name="content" class="form-control"></textarea>
@@ -8,6 +9,7 @@
 
             <div><input type="submit" value="Add Comment" class="btn btn-primary btn-block"/></div>
         </form>
+        
     @else
     <a href="{{ secure_url(route('login', [], config('app.http'))) }}">Sign-in</a> to post comments!
     @endauth

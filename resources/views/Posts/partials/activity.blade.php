@@ -16,4 +16,4 @@
     @card(['title' => 'Most Active Users Last Month', 'subtitle' => 'Users with the most posts written last month'])
             @slot('items', collect($mostActiveLastMonth)->pluck('name'))
     @endcard
-</>
+</div>

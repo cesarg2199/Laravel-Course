@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\Website\AboutController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\PostTagController;
@@ -37,6 +38,8 @@ Route::resource('posts', PostsController::class);
 //Route::resource('posts', PostsController::class)->except(['index', 'show']);
 
 Route::get('posts/tag/{tag}', [PostTagController::class, 'index'])->name('posts.tags.index');
+
+Route::resource('posts.comments', PostCommentController::class)->only('store');
 
 Auth::routes();
 
