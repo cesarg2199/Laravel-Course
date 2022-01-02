@@ -31,6 +31,11 @@ class BlogPost extends Model
         return $this->belongsToMany('App\Models\Tag')->withTimestamps();
     }
 
+    public function image()
+    {
+        return $this->hasOne('App\Models\Image');
+    }
+
     /*Scope functionality(custom queries on model)*/
     //call as latest()
     public function scopeLatest(Builder $query)

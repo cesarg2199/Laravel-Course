@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostStore;
 use App\Models\BlogPost;
+use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -63,12 +64,16 @@ class PostController extends Controller
      */
     public function store(PostStore $request)
     {
-        $validated = $request->validated();
-        $validated['user_id'] = $request->user()->id;
-        $post = BlogPost::create($validated);
+        //Create new blogpost instance and save it to the database.
+        /*$post = new BlogPost();
+        $post->title = $validated['title'];
+        $post->content = $validated['content'];
+        $post->user_id = Auth::user()->id;
+        $post->save(); */
 
+        //Testing various storage facade methods
+        /*
         $hasFile = $request->hasFile('thumbnail');
-
         if ($hasFile) {
             $file = $request->file('thumbnail');
             dump($hasFile);
@@ -82,16 +87,17 @@ class PostController extends Controller
 
             dump(Storage::url($name));
         }
+        */
+        $validated = $request->validated();
+        $validated['user_id'] = $request->user()->id;
+        $post = BlogPost::create($validated);
 
-        die;
-    
-
-        //Create new blogpost instance and save it to the database. 
-        /*$post = new BlogPost();
-        $post->title = $validated['title'];
-        $post->content = $validated['content'];
-        $post->user_id = Auth::user()->id;
-        $post->save(); */
+        if($request->hasFile('thumbnail')) {
+            $path = $request->file('thumbnail')->store('thumbnails');
+            $post->image()->save(
+                Image::create(['path' => $path])
+            );
+        }
 
         $request->session()->flash('status', 'This blog post was created!');
 
@@ -125,8 +131,6 @@ class PostController extends Controller
         }*/
 
         $this->authorize('update', $post);
-
-
         return view('Posts.edit', ['post' => $post]);
         
     }
