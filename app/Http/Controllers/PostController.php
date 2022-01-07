@@ -10,8 +10,18 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
-//use Illuminate\Support\Facades\DB;
+/*
+How controller function auto maps to policy if availble
 
+[
+    'show' => 'view',
+    'create' => 'create',
+    'store' => 'create',
+    'edit' => 'update',
+    'update' => 'update',
+    'destroy' => 'delete'
+]
+*/
 class PostController extends Controller
 {
     public function __construct()
@@ -95,7 +105,7 @@ class PostController extends Controller
         if($request->hasFile('thumbnail')) {
             $path = $request->file('thumbnail')->store('thumbnails');
             $post->image()->save(
-                Image::create(['path' => $path])
+                Image::make(['path' => $path])
             );
         }
 
@@ -113,7 +123,7 @@ class PostController extends Controller
     public function show($id)
     {
         //$this->authorize('view', BlogPost::findOrFail($id));
-        return view('Posts.show', ['post' => BlogPost::with('comments', 'tags', 'user', 'comments.user')->findOrFail($id)]);
+        return view('Posts.show', ['post' => BlogPost::with('comments', 'tags', 'user', 'comments.user', 'image')->findOrFail($id)]);
     }
 
     /**
@@ -149,6 +159,21 @@ class PostController extends Controller
         $validated = $request->validated();
         $post->fill($validated);
         $post->save();
+
+        if ($request->hasFile('thumbnail')) {
+            $path = $request->file('thumbnail')->store('thumbnails');
+
+            if($post->image) {
+                Storage::delete($post->image->path);
+                $post->image->path = $path;
+                $post->image->save();
+            }
+            else {
+                $post->image()->save(
+                    Image::make(['path' => $path])
+                ); 
+            }
+        }
         
         $request->session()->flash('status', 'Blog post was updated!');
 

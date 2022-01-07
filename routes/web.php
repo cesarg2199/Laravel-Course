@@ -5,6 +5,7 @@ use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\Website\AboutController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostTagController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -40,6 +41,8 @@ Route::resource('posts', PostController::class);
 Route::get('posts/tag/{tag}', [PostTagController::class, 'index'])->name('posts.tags.index');
 
 Route::resource('posts.comments', PostCommentController::class)->only('store');
+
+Route::resource('users', UserController::class)->only(['show', 'edit', 'update']);
 
 Auth::routes();
 

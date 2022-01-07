@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\BlogPost;
 use App\Policies\BlogPostPolicy;
+use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -17,7 +18,8 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         //Can either do it with file path or class 
         //'App\BlogPost' => 'App\Policies\BlogPostPolicy'
-        BlogPost::class => BlogPostPolicy::class
+        BlogPost::class => BlogPostPolicy::class,
+        User::class => UserPolicy::class
     ];
 
     /**
@@ -35,9 +37,9 @@ class AuthServiceProvider extends ServiceProvider
 
         //This will allow admins to override any previously defined gate
         Gate::before(function($user, $ability){
-        if($user->is_admin && in_array($ability, ['delete', 'update'])) {
-        return true;
-        }
+            if($user->is_admin && in_array($ability, ['delete', 'update'])) {
+                return true;
+            }
         });
 
 
