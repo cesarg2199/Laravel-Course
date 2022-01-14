@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Scopes\DeletedAdminScope;
+use App\Traits\Taggable;
 //use App\Scopes\LatestScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -11,24 +12,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class BlogPost extends Model
 {
     //this tells the model that the soft deletes column is enabled in the database
-    use SoftDeletes;
+    use SoftDeletes, Taggable;
 
     //how to do mass assingmnet with the create instance method 
     protected $fillable = ['title', 'content', 'user_id'];
     
     public function comments()
     {
-        return $this->hasMany('App\Models\Comment')->latest();
+        //return $this->hasMany('App\Models\Comment')->latest();
+        return $this->morphMany('App\Models\Comment', 'commentable')->latest();
     }
 
     public function user() 
     {
         return $this->belongsTo('App\Models\User');
-    }
-
-    public function tags()
-    {
-        return $this->belongsToMany('App\Models\Tag')->withTimestamps();
     }
 
     public function image()

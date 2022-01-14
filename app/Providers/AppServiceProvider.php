@@ -25,6 +25,9 @@ class AppServiceProvider extends ServiceProvider
        Blade::aliasComponent('components.card', 'card');
        Blade::aliasComponent('components.tags', 'tags');
        Blade::aliasComponent('components.errors', 'errors');
+       Blade::aliasComponent('components.comment-form', 'commentForm');
+       Blade::aliasComponent('components.comment-list', 'commentList');
+
 
         //view composer function. This allows for passing the same varibles automatically without having to pass it explicity
         view()->composer(['Posts.index', 'Posts.show'], ActivityComposer::class);

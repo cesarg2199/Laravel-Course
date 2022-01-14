@@ -1,7 +1,7 @@
 @errors @enderrors
 <div class="mb-2 mt-2">
     @auth
-        <form method="POST" action="{{ secure_url(route('posts.comments.store', ['post' => $post->id], config('app.http'))) }}">
+        <form method="POST" action="{{ $route }}">
             @csrf
             <div class="form-group">
                 <textarea name="content" class="form-control"></textarea>

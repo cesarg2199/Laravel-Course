@@ -518,6 +518,7 @@ class ComposerStaticInit769d41565aba7678aa1a0b5ad0e96754
         'App\\Http\\Controllers\\PostCommentController' => __DIR__ . '/../..' . '/app/Http/Controllers/PostCommentController.php',
         'App\\Http\\Controllers\\PostController' => __DIR__ . '/../..' . '/app/Http/Controllers/PostController.php',
         'App\\Http\\Controllers\\PostTagController' => __DIR__ . '/../..' . '/app/Http/Controllers/PostTagController.php',
+        'App\\Http\\Controllers\\UserCommentController' => __DIR__ . '/../..' . '/app/Http/Controllers/UserCommentController.php',
         'App\\Http\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/UserController.php',
         'App\\Http\\Controllers\\Website\\AboutController' => __DIR__ . '/../..' . '/app/Http/Controllers/Website/AboutController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
