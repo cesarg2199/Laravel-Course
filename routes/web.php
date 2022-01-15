@@ -47,6 +47,15 @@ Route::resource('users', UserController::class)->only(['show', 'edit', 'update']
 
 Route::resource('users.comments', UserCommentController::class)->only(['store']);
 
+/*
+A good way to render preview of the emails in the browser.
+
+Route::get('mailable', function(){
+    $comment = App\Models\Comment::find(30);
+    return new App\Mail\CommentPosted($comment);
+});
+*/
+
 Auth::routes();
 
 /*
