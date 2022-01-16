@@ -35,11 +35,4 @@ class Comment extends Model
     {
         return $query->orderBy(static::CREATED_AT, 'desc');
     }  
-
-    public static function boot()
-    {
-        parent::boot();
-
-        //static::addGlobalScope(new LatestScope);
-    }
 }

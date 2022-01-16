@@ -53,6 +53,7 @@ class BlogPost extends Model
     }
 
     //model events
+    /*
     public static function boot()
     {
         static::addGlobalScope(new DeletedAdminScope);
@@ -61,6 +62,8 @@ class BlogPost extends Model
 
         //static::addGlobalScope(new LatestScope);
 
+
+        //Moved these functions to an observer that gets called by the app service provider
         //this is important to make changes(deleting/restoring) to entities with foreign keys ties. 
         static::deleting(function (BlogPost $blogPost){
             $blogPost->comments()->delete();
@@ -70,6 +73,5 @@ class BlogPost extends Model
             $blogPost->comments()->restore();
         });
     }
-
-
+    */
 }
