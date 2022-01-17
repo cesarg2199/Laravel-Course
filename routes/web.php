@@ -5,8 +5,6 @@ use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\Website\AboutController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostTagController;
-use App\Http\Controllers\UserCommentController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -43,9 +41,7 @@ Route::get('posts/tag/{tag}', [PostTagController::class, 'index'])->name('posts.
 
 Route::resource('posts.comments', PostCommentController::class)->only('store');
 
-Route::resource('users', UserController::class)->only(['show', 'edit', 'update']);
-
-Route::resource('users.comments', UserCommentController::class)->only(['store']);
+include('WebRoutes/Users.php');
 
 /*
 A good way to render preview of the emails in the browser.

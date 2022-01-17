@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostStore;
+use App\Jobs\NotifyUsersNewPost;
 use App\Models\BlogPost;
 use App\Models\Image;
 use Illuminate\Http\Request;

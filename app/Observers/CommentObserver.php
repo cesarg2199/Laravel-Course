@@ -15,6 +15,12 @@ class CommentObserver
      */
     public function creating(Comment $comment)
     {
-        Log::info('Comment observer for creating triggered');
+        $name = $comment->commentable->user->name;
+        $id = $comment->commentable->user->id;
+        $blogPostId = $comment->commentable->id;
+
+        $message = "{$id} - {$name} added a comment to blog post {$blogPostId}";
+        //Log::channel('customlog')->info('Hello world!!');
+        //Log::info($message);
     }
 }
