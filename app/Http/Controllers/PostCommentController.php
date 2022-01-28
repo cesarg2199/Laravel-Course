@@ -35,14 +35,15 @@ class PostCommentController extends Controller
         Mail::to($post->user)->send(
             new CommentPosted($comment)
         );
-        */
+        
 
         Mail::to($post->user)->queue(
             new CommentPosted($comment)
         );
 
         NotifyUsersPostWasCommented::dispatch($comment);
-
+        */
+        
         $request->session()->flash('status', 'Comment was created!');
 
         return redirect()->back();

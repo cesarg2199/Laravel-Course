@@ -2,9 +2,13 @@
 
 namespace Illuminate\Foundation\Auth;
 
+use App\Models\Logs\LogLogin;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 trait AuthenticatesUsers
@@ -43,10 +47,20 @@ trait AuthenticatesUsers
             return $this->sendLockoutResponse($request);
         }
 
+        $ip = $request->ip();
+        $loginAttempt = new LogLogin();
+
         if ($this->attemptLogin($request)) {
             if ($request->hasSession()) {
                 $request->session()->put('auth.password_confirmed_at', time());
             }
+
+            $loginAttempt->user_id = $request->user()->id;
+            $loginAttempt->email = $request->user()->email;
+            $loginAttempt->ip = $ip;
+            $loginAttempt->success = true;
+            $loginAttempt->save();
+            
 
             return $this->sendLoginResponse($request);
         }
@@ -55,6 +69,11 @@ trait AuthenticatesUsers
         // to login and redirect the user back to the login form. Of course, when this
         // user surpasses their maximum number of attempts they will get locked out.
         $this->incrementLoginAttempts($request);
+
+        $loginAttempt->email = $request->only($this->username())["email"];
+        $loginAttempt->ip = $ip;
+        $loginAttempt->success = false;
+        $loginAttempt->save();
 
         return $this->sendFailedLoginResponse($request);
     }

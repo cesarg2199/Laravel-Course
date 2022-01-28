@@ -52,6 +52,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Comment');
     }
 
+    public function loginAttemps()
+    {
+        return $this->hasMany('App\Models\Logs\LogLogin');
+    }
+
     public function commentsOn()
     {
         return $this->morphMany('App\Models\Comment', 'commentable')->latest();
